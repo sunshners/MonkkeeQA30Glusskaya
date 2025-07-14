@@ -1,23 +1,27 @@
 package pages;
 
-import com.codeborne.selenide.Selenide;
-
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.*;
 
 public class RegistrationPage extends BasePage {
 
+    public RegistrationPage(){
+    }
+
     public RegistrationPage open(String url) {
-        Selenide.open(url);
+        open(url);
         return this;
     }
 
     public RegistrationPage fillRegistrationForm(String email, String password,
-                                                 String passwordConfirmation, String hint) {
-        $("#email").setValue(email);
-        $("#password").setValue(password);
-        $("#confirmPassword").setValue(passwordConfirmation);
-        $("#hint").setValue(hint);
+                                                 String passwordConfirmation, String passwordhint) {
+        $("[name='registration[email]']").setValue(email);
+        $x("//*[@id=\"registration_password_clear\"]").setValue(password);
+        $x("//*[@id=\"registration_password_clear_confirmation\"]").setValue(passwordConfirmation);
+        $x("//*[@id=\"registration_password_hint\"]").setValue(passwordhint);
+        $x("//*[@id=\"registration_terms_of_use\"]").click();
+        $x("//*[@id=\"registration_lost_password_warning_registered\"]").click();
+        $x("//*[@id=\"new_registration\"]/div[8]/div").click();
         return this;
     }
 
