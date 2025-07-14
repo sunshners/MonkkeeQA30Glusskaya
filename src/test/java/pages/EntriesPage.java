@@ -34,4 +34,7 @@ public class EntriesPage extends BasePage {
         waitForElementVisible(entriesList);
         return this;
     }
+
+    public void verifySuccessfulRegistration() {
+    }
 }

@@ -14,8 +14,8 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class BaseTest {
 
-    protected LoginSteps loginSteps;
-    protected RegistrationSteps registrationSteps;
+    LoginSteps loginSteps;
+    RegistrationSteps registrationSteps;
 
     protected static final String LOGIN_URL = PropertyReader.getProperty("loginUrl");
     protected static final String REGISTRATION_URL = PropertyReader.getProperty("registrationUrl");

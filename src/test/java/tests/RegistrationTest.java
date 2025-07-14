@@ -7,13 +7,12 @@ public class RegistrationTest extends BaseTest {
     @Test(description = "Успешная регистрация нового пользователя")
     public void successRegistrationTest() {
         registrationSteps
-                .registerNewUser(
+                .completeRegistration(
                     REGISTRATION_URL, 
                     REGISTRATION_EMAIL, 
                     REGISTRATION_PASSWORD,
                     REGISTRATION_PASSWORD_CONFIRMATION, 
-                    REGISTRATION_PASSWORD_HINT)
-                .verifySuccessfulRegistration();
+                    REGISTRATION_PASSWORD_HINT);
     }
 
     @Test(description = "Проверка валидации короткого пароля (<8 символов)")

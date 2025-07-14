@@ -2,13 +2,13 @@ package utils;
 
 import io.qameta.allure.Attachment;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import com.codeborne.selenide.WebDriverRunner;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,56 +16,60 @@ import java.util.concurrent.TimeUnit;
 public class TestListener implements ITestListener {
 
     @Override
-    public void onTestStart(ITestResult result) {
-        log.info("Starting test: {}", result.getName());
+    public void onTestStart(ITestResult iTestResult) {
+        log.info("======================================== STARTING TEST {} ========================================\n", iTestResult.getName());
     }
 
     @Override
-    public void onTestSuccess(ITestResult result) {
-        logExecutionTime(result, "PASSED");
+    public void onTestSuccess(ITestResult iTestResult) {
+        System.out.printf("======================================== FINISHED TEST %s Duration: %ss ========================================%n", iTestResult.getName(),
+                getExecutionTime(iTestResult));
     }
 
     @Override
-    public void onTestFailure(ITestResult result) {
-        logExecutionTime(result, "FAILED");
-        takeScreenshot();
-        attachLogs(result);
+    public void onTestFailure(ITestResult iTestResult) {
+        System.out.printf("======================================== FAILED TEST %s Duration: %ss ========================================%n", iTestResult.getName(),
+                getExecutionTime(iTestResult));
+        takeScreenshot(iTestResult);
     }
 
     @Override
-    public void onTestSkipped(ITestResult result) {
-        log.info("Test skipped: {}", result.getName());
+    public void onTestSkipped(ITestResult iTestResult) {
+        System.out.printf("======================================== SKIPPING TEST %s ========================================%n", iTestResult.getName());
+        takeScreenshot(iTestResult);
     }
 
     @Override
-    public void onStart(ITestContext context) {
-        log.info("Test suite '{}' started", context.getName());
+    public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
+
     }
 
     @Override
-    public void onFinish(ITestContext context) {
-        log.info("Test suite '{}' finished. Passed: {}, Failed: {}, Skipped: {}", 
-                context.getName(),
-                context.getPassedTests().size(),
-                context.getFailedTests().size(),
-                context.getSkippedTests().size());
+    public void onStart(ITestContext iTestContext) {
+
     }
 
-    private void logExecutionTime(ITestResult result, String status) {
-        long duration = TimeUnit.MILLISECONDS.toSeconds(result.getEndMillis() - result.getStartMillis());
-        log.info("Test {} {}. Execution time: {}s", result.getName(), status, duration);
+    @Override
+    public void onFinish(ITestContext iTestContext) {
+
     }
 
-    @Attachment(value = "Screenshot on failure", type = "image/png")
-    private byte[] takeScreenshot() {
-        WebDriver driver = WebDriverRunner.getWebDriver();
-        return driver != null ? ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES) : new byte[0];
+    @Attachment(value = "Last screen state", type = "image/jpg")
+    private byte[] takeScreenshot(ITestResult iTestResult) {
+        ITestContext context = iTestResult.getTestContext();
+        try {
+            WebDriver driver = (WebDriver) context.getAttribute("driver");
+            if(driver != null) {
+                return ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
+            } else {
+                return new byte[] {};
+            }
+        } catch (NoSuchSessionException | IllegalStateException ex) {
+            return new byte[] {};
+        }
     }
 
-    @Attachment(value = "Test logs", type = "text/plain")
-    private String attachLogs(ITestResult result) {
-        return "Test: " + result.getName() + "\n" +
-               "Status: " + (result.isSuccess() ? "PASSED" : "FAILED") + "\n" +
-               "Exception: " + (result.getThrowable() != null ? result.getThrowable().toString() : "None");
+    private long getExecutionTime(ITestResult iTestResult) {
+        return TimeUnit.MILLISECONDS.toSeconds(iTestResult.getEndMillis() - iTestResult.getStartMillis());
     }
 }

@@ -11,8 +11,8 @@ public class LoginSteps extends BaseSteps {
     private final EntriesPage entriesPage;
 
     public LoginSteps() {
-        this.loginPage = new LoginPage();
-        this.entriesPage = new EntriesPage();
+        loginPage = new LoginPage();
+        entriesPage = new EntriesPage();
     }
 
     @Step("Выполнить вход с логином '{username}' и паролем '{password}'")

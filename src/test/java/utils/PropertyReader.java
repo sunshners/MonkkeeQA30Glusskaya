@@ -21,8 +21,7 @@ public final class PropertyReader {
                 if (inputStream != null) {
                     properties.load(inputStream);
                     log.info("Properties loaded successfully from {}", DEFAULT_PROPERTIES_PATH);
-                    
-                    // Загрузка дополнительных свойств если указаны
+
                     String additionalConfig = properties.getProperty("config_file");
                     if (additionalConfig != null) {
                         loadAdditionalProperties(additionalConfig);
