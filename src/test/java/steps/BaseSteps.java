@@ -10,7 +10,4 @@ public class BaseSteps {
     protected void logStep(String message) {
         log.info("Выполняется шаг: {}", message);
     }
-
-    protected void takeScreenshot() {
-    }
 }

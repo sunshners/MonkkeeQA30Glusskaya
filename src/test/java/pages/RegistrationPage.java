@@ -1,20 +1,27 @@
 package pages;
 
+
+
+import lombok.extern.log4j.Log4j2;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
+@Log4j2
 public class RegistrationPage extends BasePage {
 
     public RegistrationPage(){
     }
 
     public RegistrationPage openPage(String url) {
+        log.info("Opening registration page at URL: {}", url);
         open(url);
         return this;
     }
 
     public RegistrationPage fillRegistrationForm(String email, String password,
                                                  String passwordConfirmation, String passwordHint) {
+        log.info("Filling registration form for email: {}", email);
         $("[name='registration[email]']").setValue(email);
         $x("//*[@id=\"registration_password_clear\"]").setValue(password);
         $x("//*[@id=\"registration_password_clear_confirmation\"]").setValue(passwordConfirmation);
@@ -27,6 +34,7 @@ public class RegistrationPage extends BasePage {
     }
 
     public void verifySuccessMessage() {
+        log.info("Verifying registration success message");
         $x("//*[contains(text(), 'User registered')]").shouldHave(text("User registered"));
     }
 
@@ -41,6 +49,7 @@ public class RegistrationPage extends BasePage {
     }
 
     public void verifyPasswordStrength(String expectedMessage) {
+        log.info("Verifying password strength message: {}", expectedMessage);
         $x("//*[@id=\"registration_password_clear-strength-indicator\"]").shouldHave(text(expectedMessage));
     }
 }
