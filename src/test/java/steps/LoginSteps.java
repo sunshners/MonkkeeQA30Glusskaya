@@ -2,7 +2,6 @@ package steps;
 
 import io.qameta.allure.Step;
 import pages.EntriesPage;
-import pages.HomePage;
 import pages.LoginPage;
 
 public class LoginSteps extends BaseSteps {
@@ -15,40 +14,33 @@ public class LoginSteps extends BaseSteps {
         entriesPage = new EntriesPage();
     }
 
-    @Step("Выполнить вход с логином '{username}' и паролем '{password}'")
-    public HomePage successfulLogin(String username, String password) {
-        logStep("Выполнение входа в систему");
-        return loginPage
-                .open()
-                .verifyPageOpened()
-                .loginAs(username, password)
-                .verifyLoginSuccess();
-    }
-
-    @Step("Попытка входа с неверными данными")
-    public LoginSteps failedLogin(String username, String password, String expectedError) {
-        logStep("Попытка входа с неверными данными");
+    @Step("Выполнить вход с верными логином и паролем")
+    public LoginSteps successfulLogin(String username, String password) {
         loginPage
                 .open()
-                .verifyPageOpened()
-                .loginAs(username, password)
-                .verifyErrorMessage(expectedError);
+                .login(username, password);
+        return this;
+    }
+
+    @Step("Выполнить вход с неверным паролем")
+    public LoginSteps failedLogin(String username, String invalidPassword){
+        loginPage
+                .open()
+                .login(username, invalidPassword);
+        return this;
+    }
+
+    @Step("Проверить отображение сообщения об ошибке входа")
+    public LoginSteps checkFailedLogin(){
+        entriesPage
+                .isFailLoginVisible();
         return this;
     }
 
     @Step("Проверить отображение страницы записей")
-    public LoginSteps verifyEntriesPageDisplayed() {
-        logStep("Проверка отображения страницы записей");
+    public LoginSteps checkEntriesPageOpened() {
         entriesPage
-                .verifyCreateButtonVisible()
-                .verifyEntriesExist();
-        return this;
-    }
-
-    @Step("Проверить сообщение об ошибке входа")
-    public LoginSteps verifyLoginErrorDisplayed(String expectedError) {
-        logStep("Проверка сообщения об ошибке входа");
-        entriesPage.verifyErrorMessage(expectedError);
+                .isCreateButtonVisible();
         return this;
     }
 }

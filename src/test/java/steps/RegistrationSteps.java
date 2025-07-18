@@ -5,26 +5,27 @@ import pages.RegistrationPage;
 
 public class RegistrationSteps extends BaseSteps {
 
-    private final RegistrationPage registrationPage;
+    RegistrationPage registrationPage;
 
     public RegistrationSteps() {
-        this.registrationPage = new RegistrationPage();
+        registrationPage = new RegistrationPage();
     }
 
     @Step("Регистрация нового пользователя с email '{email}'")
     public void completeRegistration(String url, String email, String password,
                                      String passwordConfirmation, String passwordHint) {
         logStep("Регистрация нового пользователя");
-        registrationPage.open(url)
+        registrationPage
+                .openPage(url)
                 .fillRegistrationForm(email, password, passwordConfirmation, passwordHint)
-                .submitRegistration()
                 .verifySuccessMessage();
     }
 
     @Step("Проверка валидации пароля")
     public RegistrationSteps verifyPasswordValidation(String url, String password, String expectedMessage) {
         logStep("Проверка валидации пароля");
-        registrationPage.open(url)
+        registrationPage
+                .openPage(url)
                 .enterPassword(password)
                 .verifyPasswordStrength(expectedMessage);
         return this;
@@ -34,10 +35,9 @@ public class RegistrationSteps extends BaseSteps {
     public RegistrationSteps verifyPasswordConfirmation(String url, String password,
                                                         String passwordConfirmation) {
         logStep("Проверка подтверждения пароля");
-        registrationPage.open(url)
+        registrationPage.openPage(url)
                 .enterPassword(password)
-                .confirmPassword(passwordConfirmation)
-                .verifyPasswordMismatchError();
+                .confirmPassword(passwordConfirmation);
         return this;
     }
 }

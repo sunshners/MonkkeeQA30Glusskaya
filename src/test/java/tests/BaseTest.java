@@ -17,19 +17,18 @@ public class BaseTest {
     LoginSteps loginSteps;
     RegistrationSteps registrationSteps;
 
-    protected static final String LOGIN_URL = PropertyReader.getProperty("loginUrl");
-    protected static final String REGISTRATION_URL = PropertyReader.getProperty("registrationUrl");
-    protected static final String TEST_USER_EMAIL = PropertyReader.getProperty("login");
-    protected static final String TEST_USER_PASSWORD = PropertyReader.getProperty("password");
+    protected static final String REGISTRATION_URL = System.getenv().getOrDefault("registration.url", PropertyReader.getProperty("registration.url"));
+    protected static final String TEST_USER_EMAIL = System.getenv().getOrDefault("email", PropertyReader.getProperty("email"));
+    protected static final String TEST_USER_PASSWORD = System.getenv().getOrDefault("password", PropertyReader.getProperty("password"));
     protected static final String TEST_INVALID_PASSWORD = "invalid_password";
-    protected static final String REGISTRATION_EMAIL = PropertyReader.getProperty("registrationEmail");
-    protected static final String REGISTRATION_PASSWORD = PropertyReader.getProperty("registrationPassword");
-    protected static final String REGISTRATION_PASSWORD_CONFIRMATION = PropertyReader.getProperty("registrationPasswordConfirmation");
-    protected static final String REGISTRATION_PASSWORD_HINT = PropertyReader.getProperty("registrationPasswordHint");
-    protected static final String SHORT_PASSWORD = PropertyReader.getProperty("registrationShortPassword");
-    protected static final String WEAK_PASSWORD = PropertyReader.getProperty("registrationBadRedPassword");
-    protected static final String STRONG_PASSWORD = PropertyReader.getProperty("registrationStrongGreenPassword");
-    protected static final String MISMATCHED_PASSWORD = PropertyReader.getProperty("registrationPasswordConfirmationNotEqualPassword");
+    protected static final String REGISTRATION_EMAIL = System.getenv().getOrDefault("registration.email", PropertyReader.getProperty("registration.email"));
+    protected static final String REGISTRATION_PASSWORD = System.getenv().getOrDefault("registration.password", PropertyReader.getProperty("registration.password"));
+    protected static final String REGISTRATION_PASSWORD_CONFIRMATION = System.getenv().getOrDefault("registration.password.confirm", PropertyReader.getProperty("registration.password.confirm"));
+    protected static final String REGISTRATION_PASSWORD_HINT = System.getenv().getOrDefault("registration.password.hint", PropertyReader.getProperty("registration.password.hint"));
+    protected static final String SHORT_PASSWORD = System.getenv().getOrDefault("password.validation.short", PropertyReader.getProperty("password.validation.short"));
+    protected static final String WEAK_PASSWORD = System.getenv().getOrDefault("password.validation.weak", PropertyReader.getProperty("password.validation.weak"));
+    protected static final String STRONG_PASSWORD = System.getenv().getOrDefault("password.validation.strong", PropertyReader.getProperty("password.validation.strong"));
+    protected static final String MISMATCHED_PASSWORD = System.getenv().getOrDefault("password.validation.mismatch", PropertyReader.getProperty("password.validation.mismatch"));
 
     @BeforeMethod
     public void setUp() {

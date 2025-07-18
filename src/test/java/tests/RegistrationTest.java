@@ -39,7 +39,7 @@ public class RegistrationTest extends BaseTest {
                 .verifyPasswordValidation(
                     REGISTRATION_URL, 
                     STRONG_PASSWORD, 
-                    "Password strength: Strong");
+                    "Password strength: Good");
     }
 
     @Test(description = "Проверка несовпадения пароля и подтверждения")

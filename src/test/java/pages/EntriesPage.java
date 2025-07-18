@@ -1,40 +1,21 @@
 package pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Selenide.$;
 
 public class EntriesPage extends BasePage {
 
-    private final SelenideElement createEntryButton = $("#create-entry");
-    private final SelenideElement errorMessage = $(".alert-danger");
-    private final SelenideElement successMessage = $(".alert-success");
-    private final SelenideElement entriesList = $(".entries-list");
+    private static final SelenideElement CREATE_ENTRY_BUTTON = $("#create-entry");
+    private static final SelenideElement CREATE_FAIL_BUTTOM = $(".alert-danger");
 
-    public EntriesPage verifyCreateButtonVisible() {
-        waitForElementVisible(createEntryButton);
+    public EntriesPage isCreateButtonVisible() {
+        CREATE_ENTRY_BUTTON.shouldBe(Condition.visible);
         return this;
     }
 
-    public EntriesPage verifyErrorMessage(String expectedMessage) {
-        verifyElementText(errorMessage, expectedMessage);
+    public EntriesPage isFailLoginVisible() {
+        CREATE_FAIL_BUTTOM.shouldBe(Condition.visible);
         return this;
-    }
-
-    public EntriesPage verifySuccessMessage(String expectedMessage) {
-        verifyElementText(successMessage, expectedMessage);
-        return this;
-    }
-
-    public CreateEntryPage clickCreateEntryButton() {
-        clickElement(createEntryButton);
-        return new CreateEntryPage();
-    }
-
-    public EntriesPage verifyEntriesExist() {
-        waitForElementVisible(entriesList);
-        return this;
-    }
-
-    public void verifySuccessfulRegistration() {
     }
 }
