@@ -1,6 +1,7 @@
 package tests;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -44,11 +45,7 @@ public class BaseTest {
         Configuration.browserSize = "1920x1080";
         Configuration.screenshots = true;
         Configuration.savePageSource = false;
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");
-        options.addArguments("--disable-notifications");
-        options.addArguments("--headless");
+        Configuration.headless = true;
     }
 
     private void initAllureReporting() {
@@ -65,8 +62,8 @@ public class BaseTest {
 
     @AfterMethod
     public void tearDown() {
-        if (getWebDriver() != null) {
-            getWebDriver().quit();
+        if (WebDriverRunner.hasWebDriverStarted()) {
+            WebDriverRunner.closeWebDriver();
         }
     }
 }
