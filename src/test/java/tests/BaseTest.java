@@ -48,6 +48,7 @@ public class BaseTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
         options.addArguments("--disable-notifications");
+        options.addArguments("--headless");
     }
 
     private void initAllureReporting() {
